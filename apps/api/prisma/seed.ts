@@ -13,7 +13,7 @@ const FOLDERS: { kind: FolderKind; name: string }[] = [
 ];
 
 async function main() {
-  const domain = process.env.MAIL_DOMAIN ?? 'example.com';
+  const domain = process.env.MAIL_DOMAIN ?? 'financyexpert.com';
   const email = `admin@${domain}`;
   const passwordHash = await bcrypt.hash('admin123', 12);
 

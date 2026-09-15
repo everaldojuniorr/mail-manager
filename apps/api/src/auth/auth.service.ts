@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const domain = this.config.get<string>('MAIL_DOMAIN', 'example.com');
+    const domain = this.config.get<string>('MAIL_DOMAIN', 'financyexpert.com');
     const local = dto.username.trim().toLowerCase();
     if (!/^[a-z0-9._-]+$/.test(local)) {
       throw new ConflictException(

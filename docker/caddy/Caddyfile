@@ -1,0 +1,2 @@
+# Unused locally — TLS is terminated by financial-manager Caddy.
+# See webmail.snippet and /opt/financial-manager/docker/caddy/Caddyfile.

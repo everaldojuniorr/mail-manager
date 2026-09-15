@@ -1,0 +1,11 @@
+# Served by financial-manager's Caddy (owns 80/443 on the VPS).
+# mail-manager publishes the active blue/green slot on the host at :3010
+# (reachable from Caddy via host.docker.internal; Hostinger firewall blocks public 3010).
+#
+# Included automatically by financial-manager scripts/deploy.sh → write_caddy.
+# Recreate the FM proxy after changing this so the bind mount reloads:
+#   cd /opt/financial-manager && docker compose up -d --force-recreate --no-deps proxy
+
+webmail.financyexpert.com {
+	reverse_proxy host.docker.internal:3010
+}

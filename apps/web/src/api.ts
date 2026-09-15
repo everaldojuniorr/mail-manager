@@ -1,6 +1,10 @@
 import { getToken } from './auth';
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '/api';
+// undefined → '/api' (Vite proxy in local dev)
+// '' → same origin (production: Nest serves API + SPA)
+const rawApiUrl = import.meta.env.VITE_API_URL;
+const API_BASE =
+  rawApiUrl === undefined ? '/api' : String(rawApiUrl).replace(/\/$/, '');
 
 async function request<T>(
   path: string,

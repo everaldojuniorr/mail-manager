@@ -1,11 +1,14 @@
 import { FormEvent, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Moon, Sun, Wallet } from 'lucide-react';
 import { useAuth } from '../auth';
+import { useTheme } from '../theme';
 
 export function LoginPage() {
   const { token, login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@example.com');
+  const [email, setEmail] = useState('admin@financyexpert.com');
   const [password, setPassword] = useState('admin123');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,9 +31,26 @@ export function LoginPage() {
 
   return (
     <div className="auth-page">
+      <button
+        type="button"
+        className="icon-btn with-label auth-theme-toggle"
+        onClick={toggleTheme}
+        title={theme === 'light' ? 'Tema escuro' : 'Tema claro'}
+        aria-label={theme === 'light' ? 'Ativar tema escuro' : 'Ativar tema claro'}
+      >
+        {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+        <span>{theme === 'light' ? 'Escuro' : 'Claro'}</span>
+      </button>
       <form className="auth-card" onSubmit={onSubmit}>
-        <h1>Mail Manager</h1>
-        <p className="muted">Entre na sua caixa de e-mail</p>
+        <div className="auth-brand">
+          <span className="auth-brand-mark" aria-hidden>
+            <Wallet size={20} strokeWidth={2.25} />
+          </span>
+          <div>
+            <h1>Mail Manager</h1>
+            <p className="muted">Entre na sua caixa de e-mail</p>
+          </div>
+        </div>
         {error && <div className="error">{error}</div>}
         <label>
           E-mail

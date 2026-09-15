@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { Send, X } from 'lucide-react';
 import { api } from '../api';
 import type { Message } from '../types';
 
@@ -48,45 +49,48 @@ export function Composer({ replyTo, onCancel, onDone }: Props) {
 
   return (
     <form className="composer" onSubmit={onSubmit}>
-      <header>
-        <h2>{replyTo ? 'Responder' : 'Nova mensagem'}</h2>
-        {error && <div className="error">{error}</div>}
-      </header>
-      <label>
-        Para
-        <input value={to} onChange={(e) => setTo(e.target.value)} required />
-      </label>
-      <label>
-        Cc
-        <input value={cc} onChange={(e) => setCc(e.target.value)} />
-      </label>
-      <label>
-        Assunto
-        <input value={subject} onChange={(e) => setSubject(e.target.value)} />
-      </label>
-      <label className="grow">
-        Mensagem
-        <textarea
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          rows={16}
-        />
-      </label>
-      <div className="actions">
-        <button type="submit" disabled={saving}>
-          Enviar
+      <div className="composer-toolbar">
+        <button
+          type="submit"
+          className="primary-action"
+          disabled={saving}
+        >
+          <Send size={16} /> {saving ? 'Enviando…' : 'Enviar'}
         </button>
         <button
           type="button"
-          className="secondary"
           disabled={saving}
           onClick={() => void submit(true)}
         >
           Salvar rascunho
         </button>
-        <button type="button" className="ghost" onClick={onCancel}>
-          Cancelar
+        <button type="button" onClick={onCancel}>
+          <X size={16} /> Descartar
         </button>
+        {error && <span className="error inline">{error}</span>}
+      </div>
+      <div className="composer-form">
+        <h2>{replyTo ? 'Responder' : 'Nova mensagem'}</h2>
+        <label>
+          Para
+          <input value={to} onChange={(e) => setTo(e.target.value)} required />
+        </label>
+        <label>
+          Cc
+          <input value={cc} onChange={(e) => setCc(e.target.value)} />
+        </label>
+        <label>
+          Assunto
+          <input value={subject} onChange={(e) => setSubject(e.target.value)} />
+        </label>
+        <label className="grow">
+          Mensagem
+          <textarea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            rows={16}
+          />
+        </label>
       </div>
     </form>
   );

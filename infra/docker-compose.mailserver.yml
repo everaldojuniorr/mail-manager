@@ -3,7 +3,7 @@ services:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
     container_name: mail-manager-dms
     hostname: mail
-    domainname: example.com
+    domainname: financyexpert.com
     env_file: mailserver.env
     ports:
       - "25:25"

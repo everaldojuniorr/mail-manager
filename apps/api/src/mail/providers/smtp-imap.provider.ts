@@ -30,6 +30,10 @@ export class SmtpImapMailProvider implements MailProvider {
       port,
       secure,
       auth: pass ? { user, pass } : undefined,
+      // DMS em lab usa certificado self-signed; Let's Encrypt pode reativar a verificação.
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     await transporter.sendMail({

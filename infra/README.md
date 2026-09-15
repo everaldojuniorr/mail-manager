@@ -1,71 +1,65 @@
 # Guia DNS + docker-mailserver (Fase 2 — VPS)
 
+Domínio de produção: **financyexpert.com**  
+Hostname de e-mail: **mail.financyexpert.com** (`2.25.158.41`)
+
 Este diretório sobe o **servidor de e-mail real** (SMTP/IMAP) com
 [docker-mailserver](https://docker-mailserver.github.io/docker-mailserver/latest/).
 Não use na máquina local fraca — só na VPS.
 
-## Pré-requisitos
-
-1. Domínio próprio (ex.: `seudominio.com`)
-2. VPS com IP público e portas `25`, `587`, `993`, `80`, `443` abertas
-3. DNS apontando para a VPS (abaixo)
-
-## Registros DNS (substitua o domínio e o IP)
+## DNS (Hostinger — já configurado)
 
 | Tipo | Nome | Valor |
 |------|------|--------|
-| A | `mail` | `IP_DA_VPS` |
-| MX | `@` | `mail.seudominio.com` (prioridade 10) |
-| TXT | `@` | `v=spf1 mx a:mail.seudominio.com ~all` |
-| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:postmaster@seudominio.com` |
-| TXT | `mail._domainkey` | *(cole o DKIM gerado pelo mailserver)* |
+| A | `mail` | `2.25.158.41` |
+| MX | `@` | `mail.financyexpert.com` (prioridade 10) |
+| TXT | `@` | `v=spf1 mx a:mail.financyexpert.com ip4:2.25.158.41 ~all` |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:postmaster@financyexpert.com` |
+| TXT | `mail._domainkey` | *(gerar com o mailserver — DKIM)* |
 
-PTR/rDNS (no painel do provedor da VPS): IP → `mail.seudominio.com`.
+PTR/rDNS (painel da VPS): `2.25.158.41` → `mail.financyexpert.com`.
 
 ## Subir o mailserver
 
 ```bash
 cd infra
-# edite mailserver.env e docker-compose.mailserver.yml (hostname/domainname)
 docker compose -f docker-compose.mailserver.yml up -d
 
-# criar conta de e-mail
-./setup.sh email add voce@seudominio.com 'SenhaForte'
+curl -o setup.sh https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
+chmod +x setup.sh
+
+./setup.sh email add admin@financyexpert.com 'SenhaForte'
 ./setup.sh config dkim
 ```
 
-O `setup.sh` oficial pode ser baixado:
+Cole o TXT DKIM gerado na zona DNS da Hostinger (`mail._domainkey`).
 
-```bash
-curl -o setup.sh https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
-chmod +x setup.sh
-```
+Libere no firewall da VPS: **25**, **587**, **993** (e 80/443 para TLS/webmail).
 
 ## Ligar a API NestJS ao SMTP/IMAP
 
-No `.env` da API (ou da VPS):
+No `.env` da API **na VPS**:
 
 ```env
 MAIL_PROVIDER=smtp
-MAIL_DOMAIN=seudominio.com
-SMTP_HOST=mail.seudominio.com
+MAIL_DOMAIN=financyexpert.com
+SMTP_HOST=mail.financyexpert.com
 SMTP_PORT=587
 SMTP_SECURE=false
-SMTP_USER=voce@seudominio.com
+SMTP_USER=admin@financyexpert.com
 SMTP_PASS=SenhaForte
-IMAP_HOST=mail.seudominio.com
+IMAP_HOST=mail.financyexpert.com
 IMAP_PORT=993
 IMAP_SECURE=true
 ```
 
-O adaptador já está em `apps/api/src/mail/providers/smtp-imap.provider.ts`
-(`nodemailer` + `imapflow`). Com `MAIL_PROVIDER=local` (dev), a API só
-grava no PostgreSQL.
+Em desenvolvimento local mantenha `MAIL_PROVIDER=local` (só Postgres).
 
 ## Checklist de produção
 
 - [ ] MX/A/SPF/DKIM/DMARC publicados e propagados
 - [ ] Porta 25 não bloqueada pelo provedor da VPS
 - [ ] TLS (Let's Encrypt) no mailserver / reverse proxy do webmail
-- [ ] Contas criadas no DMS alinhadas aos usuários do webmail
+- [ ] Conta `admin@financyexpert.com` criada no DMS
+- [ ] API com `MAIL_PROVIDER=smtp` e senha correta
 - [ ] Teste de envio para Gmail/Outlook e recebimento de resposta

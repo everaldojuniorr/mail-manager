@@ -1,0 +1,21 @@
+# Local development — Postgres only (API/web via `npm run dev`)
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mail
+      POSTGRES_PASSWORD: mail
+      POSTGRES_DB: mail_manager
+    ports:
+      - "5432:5432"
+    volumes:
+      - mail_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mail -d mail_manager"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mail_pg_data:

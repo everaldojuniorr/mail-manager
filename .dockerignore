@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+**/dist
+.git
+.github
+.deploy
+.env
+.env.local
+*.md
+!README.md
+infra/mailserver
+*.log
+coverage
+.turbo
+.DS_Store
