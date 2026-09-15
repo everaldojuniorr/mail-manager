@@ -1,0 +1,394 @@
+:root {
+  color-scheme: light;
+  --bg: #f3f4f6;
+  --panel: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --danger: #dc2626;
+  --sidebar: #fafafa;
+  --row-hover: #f9fafb;
+  --unread: #0f172a;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: var(--accent);
+}
+
+.auth-page {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top left, #dbeafe, transparent 40%),
+    radial-gradient(circle at bottom right, #e5e7eb, transparent 35%),
+    var(--bg);
+}
+
+.auth-card {
+  width: min(400px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.auth-card h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.auth-card label,
+.composer label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.auth-card input,
+.composer input,
+.composer textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.auth-card button,
+.composer .actions button,
+.message-view .actions button,
+.primary,
+.ghost,
+.secondary {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+}
+
+.secondary {
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: transparent;
+}
+
+.ghost:hover,
+.folder-btn:hover,
+.message-row:hover {
+  background: var(--row-hover);
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0;
+}
+
+.tiny {
+  font-size: 0.75rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.error {
+  background: #fef2f2;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
+.error.inline {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+}
+
+.shell {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 260px 340px 1fr;
+  background: var(--panel);
+}
+
+.sidebar {
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+}
+
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 8px 8px;
+}
+
+.primary.full {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.folder-group {
+  display: grid;
+  gap: 2px;
+}
+
+.group-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 10px 6px;
+}
+
+.folder-btn {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.folder-btn.active {
+  background: #e5e7eb;
+}
+
+.folder-btn .label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.logout {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.list-pane,
+.reading-pane {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.list-pane {
+  border-right: 1px solid var(--border);
+}
+
+.pane-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.pane-header h2,
+.message-view h2,
+.composer h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.message-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.message-row {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  text-align: left;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+}
+
+.message-row.active {
+  background: var(--accent-soft);
+}
+
+.message-row.unread .from,
+.message-row.unread .subject {
+  font-weight: 700;
+  color: var(--unread);
+}
+
+.row-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.row-top time,
+.preview {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.subject,
+.preview,
+.from {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  padding: 24px;
+  color: var(--muted);
+}
+
+.center-pane {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.message-view,
+.composer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 18px 22px;
+  gap: 14px;
+}
+
+.message-view .meta {
+  display: grid;
+  gap: 4px;
+  font-size: 0.92rem;
+}
+
+.message-view .actions,
+.composer .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.message-view .actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.message-view .actions button.danger {
+  color: var(--danger);
+}
+
+.message-view .body {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.message-view pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  margin: 0;
+}
+
+.composer label.grow {
+  flex: 1;
+}
+
+.composer textarea {
+  resize: vertical;
+  min-height: 220px;
+}
+
+@media (max-width: 960px) {
+  .shell {
+    grid-template-columns: 72px 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .sidebar .brand div,
+  .sidebar .group-title,
+  .sidebar .label,
+  .sidebar .badge,
+  .sidebar .logout span {
+    display: none;
+  }
+
+  .list-pane {
+    grid-column: 2;
+  }
+
+  .reading-pane {
+    display: none;
+  }
+}

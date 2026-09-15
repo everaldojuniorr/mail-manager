@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FolderKind {
+  INBOX
+  SENT
+  DRAFTS
+  TRASH
+  JUNK
+  ARCHIVE
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  displayName  String
+  createdAt    DateTime  @default(now())
+  folders      Folder[]
+  messages     Message[]
+}
+
+model Folder {
+  id        String     @id @default(uuid())
+  userId    String
+  kind      FolderKind
+  name      String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+
+  @@unique([userId, kind])
+  @@index([userId])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  userId    String
+  folderId  String
+  fromAddr  String
+  toAddr    String
+  ccAddr    String   @default("")
+  subject   String   @default("(sem assunto)")
+  bodyText  String   @default("")
+  bodyHtml  String   @default("")
+  seen      Boolean  @default(false)
+  flagged   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([userId, folderId, createdAt])
+  @@index([folderId, seen])
+}
